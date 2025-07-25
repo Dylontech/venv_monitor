@@ -1,0 +1,59 @@
+# Compilados de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Directorios de entornos virtuales
+venv/
+.venv/
+env/
+ENV/
+venv_monitor/
+
+# Archivos de distribución/paquetado
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Registros de instalador
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Informes de tests/cobertura
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Documentación generada
+docs/_build/
+
+# Checkpoints de Jupyter
+.ipynb_checkpoints/
+
+# Archivos de registro y temporales
+*.log
+*.pot
+*.tmp
+*.bak
+*.lock
+
+# Archivos generados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Módulos de Node.js (si los hubiera)
+node_modules/
+
+# lib64
+lib64/
+lib/
+bin/
+include/
