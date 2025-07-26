@@ -52,8 +52,12 @@ class GraphMonitor:
         # Configurar ventana
         self.root = tk.Tk()
         self.root.title('Monitor RPi - Gráficas')
+        # Modo oscuro para la ventana principal
+        self.root.configure(bg='black')
         # Crear figura con subgráficas
         self.fig = Figure(figsize=(6, 8), dpi=100)
+        # Fondo oscuro para la figura
+        self.fig.patch.set_facecolor('black')
         # Ejes
         gs = self.fig.add_gridspec(5, 1)
         self.ax_cpu = self.fig.add_subplot(gs[0, 0])
@@ -61,30 +65,43 @@ class GraphMonitor:
         self.ax_disk = self.fig.add_subplot(gs[2, 0])
         self.ax_net = self.fig.add_subplot(gs[3, 0])
         self.ax_temp = self.fig.add_subplot(gs[4, 0])
-        self.ax_cpu.set_title('Uso CPU (%)')
-        self.ax_mem.set_title('Uso Memoria (%)')
-        self.ax_disk.set_title('Uso Disco (%)')
-        self.ax_net.set_title('Velocidad Red (KB/s)')
-        self.ax_temp.set_title('Temperatura CPU (°C)')
-        # Crear líneas
-        (self.cpu_line,) = self.ax_cpu.plot([], [], color='tab:red')
-        (self.mem_line,) = self.ax_mem.plot([], [], color='tab:blue')
-        (self.disk_line,) = self.ax_disk.plot([], [], color='tab:green')
-        (self.net_down_line,) = self.ax_net.plot([], [], label='Descarga', color='tab:cyan')
-        (self.net_up_line,) = self.ax_net.plot([], [], label='Subida', color='tab:orange')
-        (self.temp_line,) = self.ax_temp.plot([], [], color='tab:purple')
-        self.ax_net.legend(loc='upper right', fontsize='x-small')
+        # Configurar títulos de ejes con color blanco
+        self.ax_cpu.set_title('Uso CPU (%)', color='white')
+        self.ax_mem.set_title('Uso Memoria (%)', color='white')
+        self.ax_disk.set_title('Uso Disco (%)', color='white')
+        self.ax_net.set_title('Velocidad Red (KB/s)', color='white')
+        self.ax_temp.set_title('Temperatura CPU (°C)', color='white')
+        # Crear líneas con colores visibles en modo oscuro
+        (self.cpu_line,) = self.ax_cpu.plot([], [], color='red')
+        (self.mem_line,) = self.ax_mem.plot([], [], color='deepskyblue')
+        (self.disk_line,) = self.ax_disk.plot([], [], color='lime')
+        (self.net_down_line,) = self.ax_net.plot([], [], label='Descarga', color='orange')
+        (self.net_up_line,) = self.ax_net.plot([], [], label='Subida', color='cyan')
+        (self.temp_line,) = self.ax_temp.plot([], [], color='magenta')
+        self.ax_net.legend(loc='upper right', fontsize='x-small', facecolor='black', edgecolor='black', labelcolor='white')
         # Ajustar límites iniciales
         for ax in (self.ax_cpu, self.ax_mem, self.ax_disk):
             ax.set_ylim(0, 100)
         self.ax_net.set_ylim(0, 100)  # valor inicial, ajustado dinámicamente
         self.ax_temp.set_ylim(0, 100)
-        # Sin márgenes izquierdos innecesarios
+        # Configuración visual para modo oscuro
         for ax in (self.ax_cpu, self.ax_mem, self.ax_disk, self.ax_net, self.ax_temp):
             ax.set_xlim(0, self.max_points)
-            ax.tick_params(labelsize=8)
-        # Etiqueta para valores máx/min de temperatura
-        self.temp_stats_label = tk.Label(self.root, font=('DejaVu Sans', 9))
+            ax.tick_params(colors='white', labelsize=8)
+            ax.spines['bottom'].set_color('white')
+            ax.spines['top'].set_color('white')
+            ax.spines['left'].set_color('white')
+            ax.spines['right'].set_color('white')
+            ax.yaxis.label.set_color('white')
+            ax.xaxis.label.set_color('white')
+            ax.set_facecolor('black')
+        # Etiqueta para valores máx/min de temperatura en modo oscuro
+        self.temp_stats_label = tk.Label(
+            self.root,
+            font=('DejaVu Sans', 8),
+            fg='white',
+            bg='black'
+        )
         self.temp_stats_label.pack(side='bottom', pady=2)
         # Canvas de matplotlib
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.root)

@@ -23,6 +23,9 @@ import psutil
 import tkinter as tk
 import time
 from typing import Tuple
+import subprocess
+import os
+import sys
 
 
 def read_temperature() -> float:
@@ -105,6 +108,18 @@ class FloatingMonitor:
             self.temp_label,
         ):
             label.pack(anchor='w')
+
+        # Botón para abrir la ventana de gráficas
+        self.graph_button = tk.Button(
+            self.root,
+            text='Abrir gráficas',
+            command=self._open_graph_monitor,
+            fg='white',
+            bg='gray20',
+            relief='flat',
+            font=('DejaVu Sans', 9)
+        )
+        self.graph_button.pack(fill='x', pady=(4, 2))
 
         # Iniciar actualización periódica
         self.update_stats()
@@ -240,6 +255,16 @@ class FloatingMonitor:
 
         # Programar siguiente actualización tras 1000 ms
         self.root.after(1000, self.update_stats)
+
+    def _open_graph_monitor(self) -> None:
+        """Lanza un proceso separado con la ventana de gráficas."""
+        # Ruta al script de gráficas relativa a este archivo
+        script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'monitor_graph.py')
+        # Ejecutar el script con el mismo intérprete de Python
+        try:
+            subprocess.Popen([sys.executable, script_path])
+        except Exception as e:
+            print(f"Error al lanzar monitor de gráficas: {e}")
 
     def run(self) -> None:
         """Ejecuta el bucle principal de la interfaz."""
